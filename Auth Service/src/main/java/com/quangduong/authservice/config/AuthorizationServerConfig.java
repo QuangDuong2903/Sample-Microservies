@@ -5,6 +5,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import com.quangduong.authservice.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -42,7 +44,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Configuration
 @RequiredArgsConstructor
@@ -96,12 +100,17 @@ public class AuthorizationServerConfig {
                 .build();
     }
 
-//    @Bean
-//    public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
-//        return context -> {
-//
-//        };
-//    }
+    @Bean
+    public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
+        return context -> {
+            UserDetailsImpl user = (UserDetailsImpl) context.getPrincipal().getDetails();
+            Set<String> authorities = user.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toSet());
+            context.getClaims().claim("username", user.getUsername())
+                    .claim("authorities", authorities);
+        };
+    }
 
     @Bean
     public OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator() {
@@ -112,7 +121,7 @@ public class AuthorizationServerConfig {
             throw new RuntimeException(e);
         }
         JwtGenerator jwtGenerator = new JwtGenerator(jwtEncoder);
-//        jwtGenerator.setJwtCustomizer();
+        jwtGenerator.setJwtCustomizer(tokenCustomizer());
         OAuth2AccessTokenGenerator accessTokenGenerator = new OAuth2AccessTokenGenerator();
         OAuth2RefreshTokenGenerator refreshTokenGenerator = new OAuth2RefreshTokenGenerator();
         return new DelegatingOAuth2TokenGenerator(
@@ -157,12 +166,7 @@ public class AuthorizationServerConfig {
 
         authorizationServerConfigure.tokenEndpoint(tokenEndpoint ->
                 tokenEndpoint.accessTokenRequestConverter(new OAuth2PasswordGrantAuthenticationConverter())
-                        .authenticationProvider(new OAuth2PasswordGrantAuthenticationProvider(
-                                userDetailsService,
-                                passwordEncoder(),
-                                authorizationService(),
-                                tokenGenerator()
-                        ))
+                        .authenticationProvider(new OAuth2PasswordGrantAuthenticationProvider())
         )
                 .oidc(Customizer.withDefaults());
 

@@ -2,9 +2,13 @@ package com.quangduong.authservice.config;
 
 import com.quangduong.authservice.utils.OAuth2Utils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.*;
@@ -24,13 +28,21 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-@RequiredArgsConstructor
 public class OAuth2PasswordGrantAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
-    private final OAuth2AuthorizationService authorizationService;
-    private final OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private OAuth2AuthorizationService authorizationService;
+    @Autowired
+    private OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -57,12 +69,19 @@ public class OAuth2PasswordGrantAuthenticationProvider implements Authentication
         }
 
         // Check user credentials
-
         String username = passwordGrantAuthenticationToken.getUsername();
         String password = passwordGrantAuthenticationToken.getPassword();
 
-        // Generate access token
+        Authentication credentialsAuthentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
+        // get authentication object
+        OAuth2ClientAuthenticationToken oAuth2ClientAuthenticationToken =
+                (OAuth2ClientAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        oAuth2ClientAuthenticationToken.setDetails(credentialsAuthentication.getPrincipal());
+        SecurityContextHolder.getContext().setAuthentication(oAuth2ClientAuthenticationToken);
+
+        // Generate access token
         DefaultOAuth2TokenContext tokenContext = DefaultOAuth2TokenContext.builder()
                 .registeredClient(registeredClient)
                 .principal(clientPrincipal)

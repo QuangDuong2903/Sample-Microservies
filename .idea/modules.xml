@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Authorization Server.iml" filepath="$PROJECT_DIR$/.idea/Authorization Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Auth Service/auth-service.iml" filepath="$PROJECT_DIR$/Auth Service/auth-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/User Service/user-service.iml" filepath="$PROJECT_DIR$/User Service/user-service.iml" />
+    </modules>
+  </component>
+</project>
