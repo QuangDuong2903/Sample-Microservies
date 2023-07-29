@@ -21,6 +21,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2Token;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -55,31 +56,30 @@ public class AuthorizationServerConfig {
     private final UserDetailsService userDetailsService;
 
     @Bean
-    PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider  = new DaoAuthenticationProvider();
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
 
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http
                 .authorizeHttpRequests(authorizeHttpRequest
                         -> authorizeHttpRequest.anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
-                .exceptionHandling(e -> e.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
                 .build();
     }
 
@@ -87,7 +87,7 @@ public class AuthorizationServerConfig {
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
                 .issuer("http://localhost:8000")
-                .authorizationEndpoint("oauth2/v1/authorize")
+                .authorizationEndpoint("/oauth2/v1/authorize")
                 .deviceAuthorizationEndpoint("/oauth2/v1/device_authorization")
                 .deviceVerificationEndpoint("/oauth2/v1/device_verification")
                 .tokenEndpoint("/oauth2/v1/token")
@@ -103,11 +103,17 @@ public class AuthorizationServerConfig {
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
         return context -> {
-            UserDetailsImpl user = (UserDetailsImpl) context.getPrincipal().getDetails();
+            UserDetailsImpl user = null;
+            if (context.getPrincipal().getPrincipal() instanceof UserDetailsImpl)
+                user = (UserDetailsImpl) context.getPrincipal().getPrincipal();
+            else
+                user = (UserDetailsImpl) context.getPrincipal().getDetails();
             Set<String> authorities = user.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toSet());
-            context.getClaims().claim("username", user.getUsername())
+            context.getClaims()
+                    .claim("id", user.getId())
+                    .claim("username", user.getUsername())
                     .claim("authorities", authorities);
         };
     }
@@ -144,7 +150,18 @@ public class AuthorizationServerConfig {
                 .scope("read")
                 .scope("create")
                 .build();
-        return new InMemoryRegisteredClientRepository(registeredClient);
+
+        RegisteredClient registeredClient1 = RegisteredClient.withId(UUID.randomUUID().toString())
+                .clientId("client1")
+                .clientSecret(new BCryptPasswordEncoder().encode("secret"))
+                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri("https://oidcdebugger.com/debug")
+                .tokenSettings(tokenSettings())
+                .scope("read")
+                .build();
+        return new InMemoryRegisteredClientRepository(registeredClient, registeredClient1);
     }
 
     @Bean
@@ -165,12 +182,15 @@ public class AuthorizationServerConfig {
                 http.getConfigurer(OAuth2AuthorizationServerConfigurer.class);
 
         authorizationServerConfigure.tokenEndpoint(tokenEndpoint ->
-                tokenEndpoint.accessTokenRequestConverter(new OAuth2PasswordGrantAuthenticationConverter())
-                        .authenticationProvider(new OAuth2PasswordGrantAuthenticationProvider())
-        )
+                                tokenEndpoint
+                                        .accessTokenRequestConverter(new OAuth2PasswordGrantAuthenticationConverter())
+                                        .authenticationProvider(new OAuth2PasswordGrantAuthenticationProvider())
+                )
                 .oidc(Customizer.withDefaults());
 
-        return http.build();
+        return http
+                .exceptionHandling(e -> e.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
+                .build();
     }
 
     @Bean
