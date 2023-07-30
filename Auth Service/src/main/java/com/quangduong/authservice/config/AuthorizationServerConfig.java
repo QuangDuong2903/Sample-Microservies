@@ -146,22 +146,15 @@ public class AuthorizationServerConfig {
                 .clientSecret(passwordEncoder().encode("secret"))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(OAuth2PasswordGrantAuthenticationConverter.PASSWORD)
-                .tokenSettings(tokenSettings())
-                .scope("read")
-                .scope("create")
-                .build();
-
-        RegisteredClient registeredClient1 = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client1")
-                .clientSecret(new BCryptPasswordEncoder().encode("secret"))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("https://oidcdebugger.com/debug")
                 .tokenSettings(tokenSettings())
                 .scope("read")
+                .scope("create")
                 .build();
-        return new InMemoryRegisteredClientRepository(registeredClient, registeredClient1);
+        return new InMemoryRegisteredClientRepository(registeredClient);
     }
 
     @Bean

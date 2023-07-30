@@ -1,7 +1,6 @@
 package com.quangduong.authservice.config;
 
 import com.quangduong.authservice.utils.OAuth2Utils;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -72,8 +71,16 @@ public class OAuth2PasswordGrantAuthenticationProvider implements Authentication
         String username = passwordGrantAuthenticationToken.getUsername();
         String password = passwordGrantAuthenticationToken.getPassword();
 
-        Authentication credentialsAuthentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        Authentication credentialsAuthentication;
+//                authenticationManager
+//                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
+        try {
+            credentialsAuthentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (AuthenticationException e) {
+            throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
+        }
 
         // get authentication object
         OAuth2ClientAuthenticationToken oAuth2ClientAuthenticationToken =
