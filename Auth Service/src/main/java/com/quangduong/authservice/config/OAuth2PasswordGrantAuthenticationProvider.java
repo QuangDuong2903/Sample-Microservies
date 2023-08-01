@@ -72,8 +72,6 @@ public class OAuth2PasswordGrantAuthenticationProvider implements Authentication
         String password = passwordGrantAuthenticationToken.getPassword();
 
         Authentication credentialsAuthentication;
-//                authenticationManager
-//                .authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
         try {
             credentialsAuthentication = authenticationManager
@@ -82,22 +80,23 @@ public class OAuth2PasswordGrantAuthenticationProvider implements Authentication
             throw new OAuth2AuthenticationException(OAuth2ErrorCodes.UNAUTHORIZED_CLIENT);
         }
 
-        // get authentication object
+        // Get authentication object
         OAuth2ClientAuthenticationToken oAuth2ClientAuthenticationToken =
                 (OAuth2ClientAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
         oAuth2ClientAuthenticationToken.setDetails(credentialsAuthentication.getPrincipal());
         SecurityContextHolder.getContext().setAuthentication(oAuth2ClientAuthenticationToken);
 
-        // Generate access token
-        DefaultOAuth2TokenContext tokenContext = DefaultOAuth2TokenContext.builder()
+        // Builder for access token and refresh token
+        DefaultOAuth2TokenContext.Builder tokenContextBuilder = DefaultOAuth2TokenContext.builder()
                 .registeredClient(registeredClient)
                 .principal(clientPrincipal)
                 .authorizationServerContext(AuthorizationServerContextHolder.getContext())
                 .authorizedScopes(authorizedScopes)
-                .tokenType(OAuth2TokenType.ACCESS_TOKEN)
                 .authorizationGrantType(passwordGrantAuthenticationToken.getGrantType())
-                .authorizationGrant(passwordGrantAuthenticationToken)
-                .build();
+                .authorizationGrant(passwordGrantAuthenticationToken);
+
+        // Generate access token
+        DefaultOAuth2TokenContext tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.ACCESS_TOKEN).build();
 
         OAuth2Token generatedAccessToken = tokenGenerator.generate(tokenContext);
 
@@ -127,10 +126,27 @@ public class OAuth2PasswordGrantAuthenticationProvider implements Authentication
         else
             authorizationBuilder.accessToken(accessToken);
 
+        // Generate refresh token
+        OAuth2RefreshToken refreshToken = null;
+        if (registeredClient.getAuthorizationGrantTypes().contains(AuthorizationGrantType.REFRESH_TOKEN) &&
+                !clientPrincipal.getClientAuthenticationMethod().equals(ClientAuthenticationMethod.NONE)) {
+            tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.REFRESH_TOKEN).build();
+            OAuth2Token generatedRefreshToken = tokenGenerator.generate(tokenContext);
+            if (generatedRefreshToken == null ||
+                    !(generatedRefreshToken instanceof OAuth2RefreshToken))
+                throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR,
+                        "The token generator failed to generate the refresh token.",
+                        OAuth2Utils.ACCESS_TOKEN_REQUEST_ERROR_URI));
+            refreshToken = new OAuth2RefreshToken(generatedRefreshToken.getTokenValue(),
+                    generatedRefreshToken.getIssuedAt(),
+                    generatedRefreshToken.getExpiresAt());
+            authorizationBuilder.refreshToken(refreshToken);
+        }
+
         OAuth2Authorization authorization = authorizationBuilder.build();
         authorizationService.save(authorization);
 
-        return new OAuth2AccessTokenAuthenticationToken(registeredClient, clientPrincipal, accessToken);
+        return new OAuth2AccessTokenAuthenticationToken(registeredClient, clientPrincipal, accessToken, refreshToken);
     }
 
     @Override
