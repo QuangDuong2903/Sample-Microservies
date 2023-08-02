@@ -39,12 +39,14 @@ import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
+import java.awt.*;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -103,7 +105,7 @@ public class AuthorizationServerConfig {
     @Bean
     public OAuth2TokenCustomizer<JwtEncodingContext> tokenCustomizer() {
         return context -> {
-            UserDetailsImpl user = null;
+            UserDetailsImpl user;
             if (context.getPrincipal().getPrincipal() instanceof UserDetailsImpl)
                 user = (UserDetailsImpl) context.getPrincipal().getPrincipal();
             else
@@ -111,6 +113,8 @@ public class AuthorizationServerConfig {
             Set<String> authorities = user.getAuthorities().stream()
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toSet());
+            // custom scope
+//            context.getAuthorizedScopes().add("delete");
             context.getClaims()
                     .claim("id", user.getId())
                     .claim("username", user.getUsername())
@@ -120,7 +124,7 @@ public class AuthorizationServerConfig {
 
     @Bean
     public OAuth2TokenGenerator<? extends OAuth2Token> tokenGenerator() {
-        NimbusJwtEncoder jwtEncoder = null;
+        NimbusJwtEncoder jwtEncoder;
         try {
             jwtEncoder = new NimbusJwtEncoder(jwkSource());
         } catch (NoSuchAlgorithmException e) {
