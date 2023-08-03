@@ -39,14 +39,12 @@ import org.springframework.security.oauth2.server.authorization.token.*;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
-import java.awt.*;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -116,7 +114,6 @@ public class AuthorizationServerConfig {
             // custom scope
 //            context.getAuthorizedScopes().add("delete");
             context.getClaims()
-                    .claim("id", user.getId())
                     .claim("username", user.getUsername())
                     .claim("authorities", authorities);
         };

@@ -1,4 +1,4 @@
-package com.quangduong.userservice.dto;
+package com.quangduong.userservice.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
