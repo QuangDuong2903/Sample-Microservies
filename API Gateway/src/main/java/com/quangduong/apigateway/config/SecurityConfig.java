@@ -15,7 +15,6 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-
     @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
     private String issuerUri;
 
@@ -27,10 +26,10 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(auth -> auth
                                 .pathMatchers(HttpMethod.POST, "api/oauth2/token").permitAll()
-//                        .pathMatchers(HttpMethod.GET, "api/users").hasAuthority("SCOPE_delete")
+                                .pathMatchers(HttpMethod.POST, "api/signup").permitAll()
                                 .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

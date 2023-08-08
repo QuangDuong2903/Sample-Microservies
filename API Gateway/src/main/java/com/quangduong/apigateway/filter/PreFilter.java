@@ -21,7 +21,7 @@ public class PreFilter implements GlobalFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String token = exchange.getRequest().getHeaders()
                 .getFirst("Authorization");
-        if (token == null || token.substring(0, 5).equals("Basic"))
+        if (token == null || token.startsWith("Basic"))
             return chain.filter(exchange);
         Jwt jwt = jwtDecoder.decode(token.substring(7));
         return chain.filter(

@@ -23,7 +23,9 @@ public class UserMapper {
         return User.builder()
                 .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
-                .roles(Set.of(roleRepository.findOneByCode("ROLE_USER").get()))
+                .roles(Set.of(roleRepository.findOneByCode("ROLE_USER")
+                        .orElseThrow(() -> new RuntimeException("Not found ROLE_USER")))
+                )
                 .build();
     }
 

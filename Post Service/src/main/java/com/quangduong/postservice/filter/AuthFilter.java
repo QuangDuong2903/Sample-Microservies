@@ -1,4 +1,4 @@
-package com.quangduong.userservice.filter;
+package com.quangduong.postservice.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

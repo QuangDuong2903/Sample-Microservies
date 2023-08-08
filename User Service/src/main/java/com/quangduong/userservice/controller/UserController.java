@@ -2,12 +2,17 @@ package com.quangduong.userservice.controller;
 
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
+import com.quangduong.userservice.dto.response.UserDetailsResponse;
+import com.quangduong.userservice.security.UserDetailsImpl;
 import com.quangduong.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +25,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUser() {
-        return ResponseEntity.ok(userService.getAllUser());
+    public ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam String username) {
+        return ResponseEntity.ok(userService.getUserDetails(username));
     }
 
     @PostMapping(

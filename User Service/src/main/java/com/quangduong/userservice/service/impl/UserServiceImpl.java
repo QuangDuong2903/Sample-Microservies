@@ -2,6 +2,9 @@ package com.quangduong.userservice.service.impl;
 
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
+import com.quangduong.userservice.dto.response.UserDetailsResponse;
+import com.quangduong.userservice.entity.Role;
+import com.quangduong.userservice.entity.User;
 import com.quangduong.userservice.mapper.UserMapper;
 import com.quangduong.userservice.repository.UserRepository;
 import com.quangduong.userservice.service.UserService;
@@ -28,5 +31,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO createUser(CreateUserRequest dto) {
         return userMapper.toDTO(userRepository.save(userMapper.toEntity(dto)));
+    }
+
+    @Override
+    public UserDetailsResponse getUserDetails(String username) {
+        User user = userRepository.findOneByUsernameWithRoles(username)
+                .orElseThrow(() -> new RuntimeException("Not found user with username: " + username));
+        return new UserDetailsResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getPassword(),
+                user.getRoles().stream().map(Role::getCode).toList()
+        );
     }
 }
