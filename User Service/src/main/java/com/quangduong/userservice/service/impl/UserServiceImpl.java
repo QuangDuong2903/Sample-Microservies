@@ -1,5 +1,6 @@
 package com.quangduong.userservice.service.impl;
 
+import com.quangduong.exceptionhandler.exception.ResourceNotFoundException;
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
 import com.quangduong.userservice.dto.response.UserDetailsResponse;
@@ -36,7 +37,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetailsResponse getUserDetails(String username) {
         User user = userRepository.findOneByUsernameWithRoles(username)
-                .orElseThrow(() -> new RuntimeException("Not found user with username: " + username));
+                .orElseThrow(() -> new ResourceNotFoundException("Not found user with username: " + username));
         return new UserDetailsResponse(
                 user.getId(),
                 user.getUsername(),

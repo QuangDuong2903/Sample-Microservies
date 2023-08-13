@@ -1,5 +1,6 @@
 package com.quangduong.userservice.mapper;
 
+import com.quangduong.exceptionhandler.exception.ResourceNotFoundException;
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
 import com.quangduong.userservice.entity.Role;
@@ -24,7 +25,7 @@ public class UserMapper {
                 .username(dto.getUsername())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .roles(Set.of(roleRepository.findOneByCode("ROLE_USER")
-                        .orElseThrow(() -> new RuntimeException("Not found ROLE_USER")))
+                        .orElseThrow(() -> new ResourceNotFoundException("Not found ROLE_USER")))
                 )
                 .build();
     }
