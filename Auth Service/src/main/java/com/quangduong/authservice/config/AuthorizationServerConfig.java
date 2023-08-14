@@ -113,6 +113,7 @@ public class AuthorizationServerConfig {
                     .collect(Collectors.toSet());
             // custom scope
 //            context.getAuthorizedScopes().add("delete");
+            authorities.forEach(context.getAuthorizedScopes()::add);
             context.getClaims()
                     .claim("username", user.getUsername())
                     .claim("authorities", authorities);
@@ -152,8 +153,7 @@ public class AuthorizationServerConfig {
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
                 .redirectUri("https://oidcdebugger.com/debug")
                 .tokenSettings(tokenSettings())
-                .scope("read")
-                .scope("create")
+                .scope("client-internal")
                 .build();
         return new InMemoryRegisteredClientRepository(registeredClient);
     }

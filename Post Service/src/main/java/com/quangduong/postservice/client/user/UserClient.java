@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient("USER-SERVICE")
 public interface UserClient {
 
-    @GetMapping("users")
+    @GetMapping("users/details")
     ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam String username);
 }

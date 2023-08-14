@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,11 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUser());
+    }
+
+    @GetMapping("details")
     public ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam String username) {
         return ResponseEntity.ok(userService.getUserDetails(username));
     }

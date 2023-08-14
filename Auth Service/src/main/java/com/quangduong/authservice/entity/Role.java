@@ -31,8 +31,7 @@ public class Role extends BaseEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || !(o instanceof Role)) return false;
-        Role role = (Role) o;
+        if (!(o instanceof Role role)) return false;
         return name.equals(role.name) && code.equals(role.code);
     }
 

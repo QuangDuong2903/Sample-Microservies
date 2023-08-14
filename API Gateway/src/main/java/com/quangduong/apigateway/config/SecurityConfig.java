@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .authorizeExchange(auth -> auth
                                 .pathMatchers(HttpMethod.POST, "api/oauth2/token").permitAll()
                                 .pathMatchers(HttpMethod.POST, "api/signup").permitAll()
+                                .pathMatchers(HttpMethod.GET, "api/users").hasAuthority("SCOPE_ROLE_ADMIN")
                                 .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
