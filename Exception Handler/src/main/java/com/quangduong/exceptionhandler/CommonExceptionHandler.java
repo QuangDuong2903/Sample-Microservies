@@ -10,6 +10,7 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.net.URI;
 import java.util.*;
@@ -23,6 +24,16 @@ public interface CommonExceptionHandler {
         return ProblemDetailsBuilder.statusAndDetail(HttpStatus.NOT_FOUND, e.getMessage())
                 .type(URI.create("about:blank"))
                 .title("Resource not found")
+                .build();
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    default ProblemDetail noHandlerFoundExceptionHandler(NoHandlerFoundException e) {
+        return ProblemDetailsBuilder.statusAndDetail(HttpStatus.NOT_FOUND, e.getMessage())
+                .type(URI.create("about:blank"))
+                .title("Endpoint not found")
                 .build();
     }
 

@@ -1,5 +1,7 @@
 package com.quangduong.apigateway.config;
 
+import com.quangduong.apigateway.exception.AccessDeniedExceptionHandler;
+import com.quangduong.apigateway.exception.AuthenticationExceptionHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +26,16 @@ public class SecurityConfig {
     }
 
     @Bean
+    public AuthenticationExceptionHandler authenticationExceptionHandler() {
+        return new AuthenticationExceptionHandler();
+    }
+
+    @Bean
+    public AccessDeniedExceptionHandler accessDeniedExceptionHandler() {
+        return new AccessDeniedExceptionHandler();
+    }
+
+    @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) throws Exception {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
@@ -33,7 +45,13 @@ public class SecurityConfig {
                                 .pathMatchers(HttpMethod.GET, "api/users").hasAuthority("SCOPE_ROLE_ADMIN")
                                 .anyExchange().authenticated()
                 )
+//                .exceptionHandling(ex -> ex
+//                        .authenticationEntryPoint(authenticationExceptionHandler())
+//                        .accessDeniedHandler(accessDeniedExceptionHandler())
+//                )
                 .oauth2ResourceServer(oauth2 -> oauth2
+                        .authenticationEntryPoint(authenticationExceptionHandler())
+                        .accessDeniedHandler(accessDeniedExceptionHandler())
                         .jwt(Customizer.withDefaults())
                 )
                 .build();
