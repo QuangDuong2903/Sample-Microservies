@@ -1,6 +1,5 @@
 package com.quangduong.exceptionhandler.exception;
 
-import com.quangduong.exceptionhandler.exception.ResourceNotFoundException;
 import com.quangduong.exceptionhandler.response.ProblemDetailsBuilder;
 import com.quangduong.exceptionhandler.response.ViolationError;
 import org.springframework.http.HttpStatus;
@@ -49,8 +48,7 @@ public interface CommonExceptionHandler {
             } else {
                 violations.put(
                         error.getField(),
-                        new ViolationError(error.getField(), List.of(Optional.ofNullable(error.getDefaultMessage())
-                                .orElse("This field is not valid")))
+                        new ViolationError(error.getField(), new ArrayList<>(List.of(Objects.requireNonNull(error.getDefaultMessage()))))
                 );
             }
         }

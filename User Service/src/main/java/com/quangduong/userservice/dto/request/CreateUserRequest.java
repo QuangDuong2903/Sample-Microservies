@@ -2,6 +2,7 @@ package com.quangduong.userservice.dto.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,6 @@ public class CreateUserRequest {
     private String username;
 
     @NotBlank
-    @Min(value = 8)
+    @Size(min = 8)
     private String password;
 }

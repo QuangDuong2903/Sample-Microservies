@@ -1,4 +1,4 @@
-package com.quangduong.exceptionhandler.config;
+package com.quangduong.postservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

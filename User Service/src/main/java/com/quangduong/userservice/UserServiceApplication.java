@@ -21,13 +21,13 @@ public class UserServiceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		roleRepository.save(Role.builder()
-						.code("ROLE_ADMIN")
-						.name("Admin")
-				.build());
-		roleRepository.save(Role.builder()
-				.code("ROLE_USER")
-				.name("User")
-				.build());
+//		roleRepository.save(Role.builder()
+//						.code("ROLE_ADMIN")
+//						.name("Admin")
+//				.build());
+//		roleRepository.save(Role.builder()
+//				.code("ROLE_USER")
+//				.name("User")
+//				.build());
 	}
 }

@@ -1,5 +1,6 @@
 package com.quangduong.postservice.mapper;
 
+import com.quangduong.exceptionhandler.security.UserDetailsImpl;
 import com.quangduong.postservice.dto.request.CreatePostRequest;
 import com.quangduong.postservice.dto.response.CreatePostResponse;
 import com.quangduong.postservice.entity.Post;
