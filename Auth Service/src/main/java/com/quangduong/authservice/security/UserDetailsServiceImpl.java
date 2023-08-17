@@ -2,6 +2,7 @@ package com.quangduong.authservice.security;
 
 import com.quangduong.authservice.entity.User;
 import com.quangduong.authservice.repository.UserRepository;
+import com.quangduong.exceptionhandler.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

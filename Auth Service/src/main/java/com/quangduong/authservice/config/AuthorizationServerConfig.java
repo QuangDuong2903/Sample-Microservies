@@ -5,7 +5,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.quangduong.authservice.security.UserDetailsImpl;
+import com.quangduong.exceptionhandler.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -203,8 +203,7 @@ public class AuthorizationServerConfig {
     private static KeyPair generateRsaKey() throws NoSuchAlgorithmException {
         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
         keyPairGenerator.initialize(2048);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        return keyPair;
+        return keyPairGenerator.generateKeyPair();
     }
 
     @Bean

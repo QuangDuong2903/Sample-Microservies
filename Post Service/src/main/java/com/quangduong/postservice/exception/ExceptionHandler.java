@@ -1,6 +1,6 @@
 package com.quangduong.postservice.exception;
 
-import com.quangduong.exceptionhandler.CommonExceptionHandler;
+import com.quangduong.exceptionhandler.exception.CommonExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice

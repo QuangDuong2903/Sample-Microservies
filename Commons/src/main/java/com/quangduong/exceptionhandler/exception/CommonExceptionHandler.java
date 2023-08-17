@@ -1,4 +1,4 @@
-package com.quangduong.exceptionhandler;
+package com.quangduong.exceptionhandler.exception;
 
 import com.quangduong.exceptionhandler.exception.ResourceNotFoundException;
 import com.quangduong.exceptionhandler.response.ProblemDetailsBuilder;

@@ -1,4 +1,4 @@
-package com.quangduong.authservice.security;
+package com.quangduong.exceptionhandler.security;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;

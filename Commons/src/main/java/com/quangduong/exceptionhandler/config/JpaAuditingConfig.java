@@ -1,4 +1,4 @@
-package com.quangduong.authservice.config;
+package com.quangduong.exceptionhandler.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class JpaAuditingConfig {
 
     @Bean
-    AuditorAware<String> auditorProvider() {
+    public AuditorAware<String> auditorProvider() {
         return new AuditorAwareImpl();
     }
 
@@ -28,5 +28,4 @@ public class JpaAuditingConfig {
         }
 
     }
-
 }

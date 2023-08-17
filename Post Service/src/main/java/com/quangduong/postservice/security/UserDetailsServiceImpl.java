@@ -1,5 +1,6 @@
 package com.quangduong.postservice.security;
 
+import com.quangduong.exceptionhandler.security.UserDetailsImpl;
 import com.quangduong.postservice.client.user.UserClient;
 import com.quangduong.postservice.client.user.dto.UserDetailsResponse;
 import lombok.RequiredArgsConstructor;

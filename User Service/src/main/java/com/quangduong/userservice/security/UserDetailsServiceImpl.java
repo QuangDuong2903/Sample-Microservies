@@ -1,5 +1,6 @@
 package com.quangduong.userservice.security;
 
+import com.quangduong.exceptionhandler.security.UserDetailsImpl;
 import com.quangduong.userservice.entity.User;
 import com.quangduong.userservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

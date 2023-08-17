@@ -1,5 +1,6 @@
 package com.quangduong.userservice.entity;
 
+import com.quangduong.exceptionhandler.jpa.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
