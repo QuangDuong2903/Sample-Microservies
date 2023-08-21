@@ -132,8 +132,7 @@ public class OAuth2PasswordGrantAuthenticationProvider implements Authentication
                 !clientPrincipal.getClientAuthenticationMethod().equals(ClientAuthenticationMethod.NONE)) {
             tokenContext = tokenContextBuilder.tokenType(OAuth2TokenType.REFRESH_TOKEN).build();
             OAuth2Token generatedRefreshToken = tokenGenerator.generate(tokenContext);
-            if (generatedRefreshToken == null ||
-                    !(generatedRefreshToken instanceof OAuth2RefreshToken))
+            if (!(generatedRefreshToken instanceof OAuth2RefreshToken))
                 throw new OAuth2AuthenticationException(new OAuth2Error(OAuth2ErrorCodes.SERVER_ERROR,
                         "The token generator failed to generate the refresh token.",
                         OAuth2Utils.ACCESS_TOKEN_REQUEST_ERROR_URI));

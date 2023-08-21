@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: post-service
+  profiles:
+    active: default
+  config:
+    import: configserver:http://localhost:8071

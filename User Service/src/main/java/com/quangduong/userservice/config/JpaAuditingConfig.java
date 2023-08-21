@@ -1,5 +1,6 @@
 package com.quangduong.userservice.config;
 
+import com.quangduong.exceptionhandler.jpa.auditor.AuditorAwareImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -14,18 +15,8 @@ import java.util.Optional;
 public class JpaAuditingConfig {
 
     @Bean
-    public AuditorAware<String> auditorProvider() {
+    public AuditorAware<Long> auditorProvider() {
         return new AuditorAwareImpl();
     }
 
-    public static class AuditorAwareImpl implements AuditorAware<String> {
-        @Override
-        public Optional<String> getCurrentAuditor() {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null || !authentication.isAuthenticated())
-                return Optional.of("System");
-            return Optional.of(authentication.getName()); // return value of method getusername in userDetails
-        }
-
-    }
 }

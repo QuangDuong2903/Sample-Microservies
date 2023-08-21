@@ -1,5 +1,6 @@
 package com.quangduong.userservice.controller;
 
+import com.quangduong.exceptionhandler.response.RestResponse;
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
 import com.quangduong.userservice.dto.response.UserDetailsResponse;
@@ -26,16 +27,17 @@ public class UserController {
     }
 
     @GetMapping("details")
-    public ResponseEntity<UserDetailsResponse> getUserDetails(@RequestParam String username) {
-        return ResponseEntity.ok(userService.getUserDetails(username));
+    public ResponseEntity<RestResponse<UserDetailsResponse>> getUserDetails(@RequestParam String username) {
+        return ResponseEntity.ok(new RestResponse<>(HttpStatus.OK.value(), userService.getUserDetails(username)));
     }
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid CreateUserRequest dto) {
-        return new ResponseEntity<>(userService.createUser(dto), HttpStatus.CREATED);
+    public ResponseEntity<RestResponse<UserDTO>> createUser(@RequestBody @Valid CreateUserRequest dto) {
+        return new ResponseEntity<>(new RestResponse<>(
+                HttpStatus.CREATED.value(), userService.createUser(dto)), HttpStatus.CREATED);
     }
 
 }

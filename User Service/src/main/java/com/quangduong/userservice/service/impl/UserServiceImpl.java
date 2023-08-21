@@ -6,6 +6,7 @@ import com.quangduong.userservice.dto.response.UserDTO;
 import com.quangduong.userservice.dto.response.UserDetailsResponse;
 import com.quangduong.userservice.entity.Role;
 import com.quangduong.userservice.entity.User;
+import com.quangduong.userservice.exception.UsernameAlreadyExistException;
 import com.quangduong.userservice.mapper.UserMapper;
 import com.quangduong.userservice.repository.UserRepository;
 import com.quangduong.userservice.service.UserService;
@@ -31,6 +32,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO createUser(CreateUserRequest dto) {
+        if (userRepository.findOneByUsername(dto.getUsername()).isPresent())
+            throw new UsernameAlreadyExistException("User with username: " + dto.getUsername() + " already exist");
         return userMapper.toDTO(userRepository.save(userMapper.toEntity(dto)));
     }
 

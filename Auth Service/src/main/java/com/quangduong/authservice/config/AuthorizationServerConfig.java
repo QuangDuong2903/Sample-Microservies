@@ -112,10 +112,9 @@ public class AuthorizationServerConfig {
                     .map(GrantedAuthority::getAuthority)
                     .collect(Collectors.toSet());
             // custom scope
-//            context.getAuthorizedScopes().add("delete");
             authorities.forEach(context.getAuthorizedScopes()::add);
             context.getClaims()
-                    .claim("username", user.getUsername())
+                    .claim("id", user.getId())
                     .claim("authorities", authorities);
         };
     }
@@ -183,7 +182,8 @@ public class AuthorizationServerConfig {
                 .oidc(Customizer.withDefaults());
 
         return http
-                .exceptionHandling(e -> e.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login")))
+                .exceptionHandling(e -> e.authenticationEntryPoint(
+                        new LoginUrlAuthenticationEntryPoint("/login")))
                 .build();
     }
 

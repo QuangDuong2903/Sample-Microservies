@@ -60,13 +60,13 @@ public interface CommonExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    default ProblemDetail handleGlobalException(Exception e) {
-        return ProblemDetailsBuilder.statusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage())
-                .type(URI.create("about:blank"))
-                .title("Internal server error")
-                .build();
-    }
+//    @ExceptionHandler(Exception.class)
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    default ProblemDetail handleGlobalException(Exception e) {
+//        return ProblemDetailsBuilder.statusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage())
+//                .type(URI.create("about:blank"))
+//                .title("Internal server error")
+//                .build();
+//    }
 }
