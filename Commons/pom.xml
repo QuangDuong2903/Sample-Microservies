@@ -14,6 +14,7 @@
 	<name>Commons</name>
 	<description>Helper for services</description>
 	<properties>
+		<tsid-creator.version>5.2.4</tsid-creator.version>
 		<lombok.version>1.18.28</lombok.version>
 		<snowflake-id.version>0.0.2</snowflake-id.version>
 		<java.version>17</java.version>
@@ -35,7 +36,12 @@
 		<dependency>
 			<groupId>de.mkammerer.snowflake-id</groupId>
 			<artifactId>snowflake-id</artifactId>
-			<version>0.0.2</version>
+			<version>${snowflake-id.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.f4b6a3</groupId>
+			<artifactId>tsid-creator</artifactId>
+			<version>${tsid-creator.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -49,14 +55,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 </project>

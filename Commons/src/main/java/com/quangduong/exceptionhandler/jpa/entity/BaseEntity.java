@@ -1,6 +1,7 @@
 package com.quangduong.exceptionhandler.jpa.entity;
 
 import com.quangduong.exceptionhandler.jpa.generator.SnowFlakeGenerator;
+import com.quangduong.exceptionhandler.jpa.generator.Tsid;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -19,17 +20,16 @@ import java.time.Instant;
 public abstract class BaseEntity {
 
     @Id
-    @GenericGenerator(name = "snowflakeIdGenerator", type = SnowFlakeGenerator.class)
-    @GeneratedValue(generator = "snowflakeIdGenerator")
+    @Tsid
     @Column(name = "id", nullable = false)
     private Long id;
 
     @CreatedDate
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     private Instant createdAt;
 
     @LastModifiedDate
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
     @CreatedBy

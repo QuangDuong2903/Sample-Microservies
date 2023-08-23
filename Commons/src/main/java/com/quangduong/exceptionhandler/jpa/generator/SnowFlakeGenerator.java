@@ -6,9 +6,9 @@ import org.hibernate.id.IdentifierGenerator;
 
 public class SnowFlakeGenerator implements IdentifierGenerator {
 
-    private final Integer generatorId = 1;
+    private static final Integer generatorId = 1;
 
-    private final SnowflakeIdGenerator generator = SnowflakeIdGenerator.createDefault(generatorId);
+    private static final SnowflakeIdGenerator generator = SnowflakeIdGenerator.createDefault(generatorId);
 
     @Override
     public Object generate(SharedSessionContractImplementor sharedSessionContractImplementor, Object o) {

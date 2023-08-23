@@ -1,5 +1,6 @@
 package com.quangduong.postservice.controller;
 
+import com.quangduong.exceptionhandler.response.RestResponse;
 import com.quangduong.postservice.dto.request.CreatePostRequest;
 import com.quangduong.postservice.dto.response.CreatePostResponse;
 import com.quangduong.postservice.service.PostService;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("posts")
@@ -20,7 +24,10 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public ResponseEntity<CreatePostResponse> createPost(@RequestBody @Valid CreatePostRequest dto) {
-        return new ResponseEntity<>(postService.createPost(dto), HttpStatus.CREATED);
+    public ResponseEntity<RestResponse<CreatePostResponse>> createPost(@RequestBody @Valid CreatePostRequest request) {
+        RestResponse<CreatePostResponse> response = postService.createPost(request);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(response.data().id()).toUri();
+        return ResponseEntity.created(location).body(response);
     }
 }

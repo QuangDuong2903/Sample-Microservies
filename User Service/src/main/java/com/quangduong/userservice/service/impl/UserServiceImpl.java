@@ -1,6 +1,8 @@
 package com.quangduong.userservice.service.impl;
 
 import com.quangduong.exceptionhandler.exception.ResourceNotFoundException;
+import com.quangduong.exceptionhandler.response.ListResponse;
+import com.quangduong.exceptionhandler.response.RestResponse;
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
 import com.quangduong.userservice.dto.response.UserDetailsResponse;
@@ -24,28 +26,28 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public List<UserDTO> getAllUser() {
-        return userRepository.findAll().stream()
+    public RestResponse<List<UserDTO>> getAllUser() {
+        return RestResponse.ok(userRepository.findAll().stream()
                 .map(userMapper::toDTO)
-                .toList();
+                .toList());
     }
 
     @Override
-    public UserDTO createUser(CreateUserRequest dto) {
-        if (userRepository.findOneByUsername(dto.getUsername()).isPresent())
-            throw new UsernameAlreadyExistException("User with username: " + dto.getUsername() + " already exist");
-        return userMapper.toDTO(userRepository.save(userMapper.toEntity(dto)));
+    public RestResponse<UserDTO> createUser(CreateUserRequest dto) {
+        if (userRepository.findOneByUsername(dto.username()).isPresent())
+            throw new UsernameAlreadyExistException("User with username: " + dto.username() + " already exist");
+        return RestResponse.created(userMapper.toDTO(userRepository.save(userMapper.toEntity(dto))));
     }
 
     @Override
-    public UserDetailsResponse getUserDetails(String username) {
+    public RestResponse<UserDetailsResponse> getUserDetails(String username) {
         User user = userRepository.findOneByUsernameWithRoles(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found user with username: " + username));
-        return new UserDetailsResponse(
+        return RestResponse.ok(new UserDetailsResponse(
                 user.getId(),
                 user.getUsername(),
                 user.getPassword(),
                 user.getRoles().stream().map(Role::getCode).toList()
-        );
+        ));
     }
 }

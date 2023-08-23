@@ -14,14 +14,17 @@ spring:
     password: 292003
   cloud:
     function:
-      definition: sendMessage;convertToUpperCase;receiveMessage
+#      definition: sendMessage;convertToUpperCase;receiveMessage
+    definition: handleMessage
     stream:
       bindings:
-        sendMessage-out-0:
-          destination: messages-topic
-        convertToUppercase-in-0:
-          destination: messages-topic
-        convertToUppercase-out-0:
-          destination: values-topic
-        receiveMessage-in-0:
-          destination: values-topic
+#        sendMessage-out-0:
+#          destination: messages-topic
+#        convertToUppercase-in-0:
+#          destination: messages-topic
+#        convertToUppercase-out-0:
+#          destination: values-topic
+#        receiveMessage-in-0:
+#          destination: values-topic
+        handleMessage-in-0:
+          destination: notification-topic

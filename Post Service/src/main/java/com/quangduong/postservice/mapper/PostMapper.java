@@ -12,8 +12,8 @@ public class PostMapper {
 
     public Post toEntity(CreatePostRequest dto) {
         return new Post(
-                dto.getTitle(),
-                dto.getContent(),
+                dto.title(),
+                dto.content(),
                 ((UserDetailsImpl) (SecurityContextHolder.getContext().getAuthentication().getPrincipal())).getId()
         );
     }

@@ -1,6 +1,11 @@
 spring:
   application:
     name: user-service
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: quangduong
+    password: 292003
   profiles:
     active: default
   config:

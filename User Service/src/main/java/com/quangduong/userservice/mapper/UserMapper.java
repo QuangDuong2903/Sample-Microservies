@@ -22,8 +22,8 @@ public class UserMapper {
 
     public User toEntity(CreateUserRequest dto) {
         return User.builder()
-                .username(dto.getUsername())
-                .password(passwordEncoder.encode(dto.getPassword()))
+                .username(dto.username())
+                .password(passwordEncoder.encode(dto.password()))
                 .roles(Set.of(roleRepository.findOneByCode("ROLE_USER")
                         .orElseThrow(() -> new ResourceNotFoundException("Not found ROLE_USER")))
                 )
@@ -32,6 +32,7 @@ public class UserMapper {
 
     public UserDTO toDTO(User entity) {
         return new UserDTO(
+                entity.getId(),
                 entity.getUsername(),
                 entity.getRoles().stream().map(Role::getCode).toList()
         );
