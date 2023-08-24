@@ -14,10 +14,10 @@
 	<name>User Service</name>
 	<description>User Service</description>
 	<properties>
+		<java.version>17</java.version>
 		<mysql.version>8.0.31</mysql.version>
 		<spring-cloud.version>2022.0.2</spring-cloud.version>
 		<lombok.version>1.18.28</lombok.version>
-		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

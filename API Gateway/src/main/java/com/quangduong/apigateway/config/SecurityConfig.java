@@ -40,10 +40,11 @@ public class SecurityConfig {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(auth -> auth
-                                .pathMatchers(HttpMethod.POST, "api/oauth2/token").permitAll()
-                                .pathMatchers(HttpMethod.POST, "api/signup").permitAll()
-                                .pathMatchers(HttpMethod.GET, "api/users").hasAuthority("SCOPE_ROLE_ADMIN")
-                                .anyExchange().authenticated()
+                        .pathMatchers(HttpMethod.POST, "api/oauth2/token").permitAll()
+                        .pathMatchers(HttpMethod.POST, "api/signup").permitAll()
+                        .pathMatchers("eureka/dashboard").permitAll()
+                        .pathMatchers(HttpMethod.GET, "api/users").hasAuthority("SCOPE_ROLE_ADMIN")
+                        .anyExchange().authenticated()
                 )
 //                .exceptionHandling(ex -> ex
 //                        .authenticationEntryPoint(authenticationExceptionHandler())

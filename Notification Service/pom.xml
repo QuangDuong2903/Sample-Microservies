@@ -14,9 +14,9 @@
 	<name>Notification Service</name>
 	<description>Notification Service</description>
 	<properties>
+		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.2</spring-cloud.version>
 		<lombok.version>1.18.28</lombok.version>
-		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,6 +26,10 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-stream-rabbit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
 
 		<dependency>

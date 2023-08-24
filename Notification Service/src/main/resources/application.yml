@@ -28,3 +28,10 @@ spring:
 #          destination: values-topic
         handleMessage-in-0:
           destination: notification-topic
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka
+  instance:
+    hostname: localhost

@@ -14,10 +14,10 @@
 	<name>Commons</name>
 	<description>Helper for services</description>
 	<properties>
+		<java.version>17</java.version>
 		<tsid-creator.version>5.2.4</tsid-creator.version>
 		<lombok.version>1.18.28</lombok.version>
 		<snowflake-id.version>0.0.2</snowflake-id.version>
-		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

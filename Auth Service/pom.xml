@@ -14,10 +14,10 @@
 	<name>Auth Service</name>
 	<description>OAuth2 for microservices</description>
 	<properties>
+		<java.version>17</java.version>
 		<mysql.version>8.0.31</mysql.version>
 		<spring-cloud.version>2022.0.2</spring-cloud.version>
 		<lombok.version>1.18.26</lombok.version>
-		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>

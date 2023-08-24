@@ -1,8 +1,9 @@
 package com.quangduong.postservice.service.impl;
 
+import com.quangduong.exceptionhandler.exception.ResourceNotFoundException;
 import com.quangduong.exceptionhandler.response.RestResponse;
 import com.quangduong.postservice.dto.request.CreatePostRequest;
-import com.quangduong.postservice.dto.response.CreatePostResponse;
+import com.quangduong.postservice.dto.response.PostDTO;
 import com.quangduong.postservice.mapper.PostMapper;
 import com.quangduong.postservice.repository.PostRepository;
 import com.quangduong.postservice.service.PostService;
@@ -18,7 +19,15 @@ public class PostServiceImpl implements PostService {
     private final PostMapper postMapper;
 
     @Override
-    public RestResponse<CreatePostResponse> createPost(CreatePostRequest dto) {
-        return RestResponse.created(postMapper.toCreatePostResponse(postRepository.save(postMapper.toEntity(dto))));
+    public RestResponse<PostDTO> createPost(CreatePostRequest dto) {
+        return RestResponse.created(postMapper.toPostDTO(postRepository.save(postMapper.toEntity(dto))));
+    }
+
+    @Override
+    public RestResponse<PostDTO> getOnePost(Long id) {
+        return postRepository.findById(id)
+                .map(postMapper::toPostDTO)
+                .map(RestResponse::ok)
+                .orElseThrow(() -> new ResourceNotFoundException("Not found post with id: " + id));
     }
 }

@@ -1,0 +1,57 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8000
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users, /api/signup
+          filters:
+            - SetPath=/users
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/oauth2/token
+          filters:
+            - SetPath=/oauth2/v1/token
+        - id: post-service
+          uri: lb://post-service
+          predicates:
+            - Path=/api/posts/**
+          filters:
+            - RewritePath=/api/posts, /posts
+            - RewritePath=/api/posts/(?<segment>.*), /posts/$\{segment}
+        - id: discovery-server
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/dashboard
+          filters:
+            - SetPath=/
+
+app:
+  eureka-server: localhost
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:password@localhost:8761/eureka
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        security: TRACE
+        cloud:
+          gateway: TRACE
