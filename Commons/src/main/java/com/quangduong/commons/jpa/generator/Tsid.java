@@ -1,4 +1,4 @@
-package com.quangduong.exceptionhandler.jpa.generator;
+package com.quangduong.commons.jpa.generator;
 
 import org.hibernate.annotations.IdGeneratorType;
 
@@ -7,7 +7,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@IdGeneratorType(SnowFlakeGenerator.class)
+@IdGeneratorType(TsidGenerator.class)
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Snowflake {}
+public @interface Tsid {}

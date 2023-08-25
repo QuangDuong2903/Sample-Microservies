@@ -1,7 +1,7 @@
 package com.quangduong.userservice.exception;
 
-import com.quangduong.exceptionhandler.exception.CommonExceptionHandler;
-import com.quangduong.exceptionhandler.response.ProblemDetailsBuilder;
+import com.quangduong.commons.exception.CommonExceptionHandler;
+import com.quangduong.commons.response.ProblemDetailsBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;

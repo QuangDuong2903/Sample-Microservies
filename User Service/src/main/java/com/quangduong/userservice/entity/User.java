@@ -1,6 +1,6 @@
 package com.quangduong.userservice.entity;
 
-import com.quangduong.exceptionhandler.jpa.entity.BaseEntity;
+import com.quangduong.commons.jpa.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

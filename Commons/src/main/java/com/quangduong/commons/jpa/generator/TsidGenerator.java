@@ -1,4 +1,4 @@
-package com.quangduong.exceptionhandler.jpa.generator;
+package com.quangduong.commons.jpa.generator;
 
 import com.github.f4b6a3.tsid.TsidFactory;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

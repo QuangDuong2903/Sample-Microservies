@@ -1,6 +1,6 @@
 package com.quangduong.userservice.mapper;
 
-import com.quangduong.exceptionhandler.exception.ResourceNotFoundException;
+import com.quangduong.commons.exception.ResourceNotFoundException;
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
 import com.quangduong.userservice.entity.Role;

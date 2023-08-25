@@ -29,7 +29,7 @@ public class GlobalFilter implements org.springframework.cloud.gateway.filter.Gl
                 exchange.mutate().request(
                                 exchange.getRequest().mutate()
                                         .header("X-Auth-User-Id", jwt.getClaimAsString("id"))
-                                        .header("X-Auth-Authorities",
+                                        .header("X-Auth-User-Authorities",
                                                 String.valueOf(jwt.getClaimAsString("authorities")))
                                         .build()
                         )

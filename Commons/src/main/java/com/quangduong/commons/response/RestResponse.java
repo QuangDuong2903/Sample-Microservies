@@ -1,4 +1,4 @@
-package com.quangduong.exceptionhandler.response;
+package com.quangduong.commons.response;
 
 import org.springframework.http.HttpStatus;
 

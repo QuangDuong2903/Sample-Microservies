@@ -1,4 +1,4 @@
-package com.quangduong.exceptionhandler.exception;
+package com.quangduong.commons.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
 

@@ -1,6 +1,6 @@
 package com.quangduong.userservice.controller;
 
-import com.quangduong.exceptionhandler.response.RestResponse;
+import com.quangduong.commons.response.RestResponse;
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
 import com.quangduong.userservice.dto.response.UserDetailsResponse;
@@ -8,7 +8,6 @@ import com.quangduong.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

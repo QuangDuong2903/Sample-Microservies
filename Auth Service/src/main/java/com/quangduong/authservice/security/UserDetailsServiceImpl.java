@@ -2,7 +2,7 @@ package com.quangduong.authservice.security;
 
 import com.quangduong.authservice.entity.User;
 import com.quangduong.authservice.repository.UserRepository;
-import com.quangduong.exceptionhandler.security.UserDetailsImpl;
+import com.quangduong.commons.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

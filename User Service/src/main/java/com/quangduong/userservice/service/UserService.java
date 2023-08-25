@@ -1,7 +1,6 @@
 package com.quangduong.userservice.service;
 
-import com.quangduong.exceptionhandler.response.ListResponse;
-import com.quangduong.exceptionhandler.response.RestResponse;
+import com.quangduong.commons.response.RestResponse;
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
 import com.quangduong.userservice.dto.response.UserDetailsResponse;

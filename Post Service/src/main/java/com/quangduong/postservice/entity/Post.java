@@ -1,6 +1,6 @@
 package com.quangduong.postservice.entity;
 
-import com.quangduong.exceptionhandler.jpa.entity.BaseEntity;
+import com.quangduong.commons.jpa.entity.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;

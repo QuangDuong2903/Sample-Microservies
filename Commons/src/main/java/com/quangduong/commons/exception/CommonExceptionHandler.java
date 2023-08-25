@@ -1,7 +1,7 @@
-package com.quangduong.exceptionhandler.exception;
+package com.quangduong.commons.exception;
 
-import com.quangduong.exceptionhandler.response.ProblemDetailsBuilder;
-import com.quangduong.exceptionhandler.response.ViolationError;
+import com.quangduong.commons.response.ProblemDetailsBuilder;
+import com.quangduong.commons.response.ViolationError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;

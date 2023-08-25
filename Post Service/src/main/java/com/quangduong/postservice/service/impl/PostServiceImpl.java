@@ -1,7 +1,7 @@
 package com.quangduong.postservice.service.impl;
 
-import com.quangduong.exceptionhandler.exception.ResourceNotFoundException;
-import com.quangduong.exceptionhandler.response.RestResponse;
+import com.quangduong.commons.exception.ResourceNotFoundException;
+import com.quangduong.commons.response.RestResponse;
 import com.quangduong.postservice.dto.request.CreatePostRequest;
 import com.quangduong.postservice.dto.response.PostDTO;
 import com.quangduong.postservice.mapper.PostMapper;

@@ -1,4 +1,4 @@
-package com.quangduong.exceptionhandler.jpa.auditor;
+package com.quangduong.commons.jpa.auditor;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.data.domain.AuditorAware;

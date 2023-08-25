@@ -1,4 +1,4 @@
-package com.quangduong.exceptionhandler.jpa.generator;
+package com.quangduong.commons.jpa.generator;
 
 import de.mkammerer.snowflakeid.SnowflakeIdGenerator;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;

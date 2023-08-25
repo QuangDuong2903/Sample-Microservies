@@ -1,10 +1,8 @@
-package com.quangduong.exceptionhandler.jpa.entity;
+package com.quangduong.commons.jpa.entity;
 
-import com.quangduong.exceptionhandler.jpa.generator.SnowFlakeGenerator;
-import com.quangduong.exceptionhandler.jpa.generator.Tsid;
+import com.quangduong.commons.jpa.generator.Tsid;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
