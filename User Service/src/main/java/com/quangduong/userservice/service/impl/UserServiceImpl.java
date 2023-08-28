@@ -1,12 +1,8 @@
 package com.quangduong.userservice.service.impl;
 
-import com.quangduong.commons.exception.ResourceNotFoundException;
 import com.quangduong.commons.response.RestResponse;
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
-import com.quangduong.userservice.dto.response.UserDetailsResponse;
-import com.quangduong.userservice.entity.Role;
-import com.quangduong.userservice.entity.User;
 import com.quangduong.userservice.exception.UsernameAlreadyExistException;
 import com.quangduong.userservice.mapper.UserMapper;
 import com.quangduong.userservice.repository.UserRepository;
@@ -27,7 +23,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public RestResponse<List<UserDTO>> getAllUser() {
         return RestResponse.ok(userRepository.findAll().stream()
-                .map(userMapper::toDTO)
+                .map(userMapper::userToUserDTO)
                 .toList());
     }
 
@@ -35,18 +31,8 @@ public class UserServiceImpl implements UserService {
     public RestResponse<UserDTO> createUser(CreateUserRequest dto) {
         if (userRepository.findOneByUsername(dto.username()).isPresent())
             throw new UsernameAlreadyExistException("User with username: " + dto.username() + " already exist");
-        return RestResponse.created(userMapper.toDTO(userRepository.save(userMapper.toEntity(dto))));
+        return RestResponse.created(userMapper
+                .userToUserDTO(userRepository.save(userMapper.createUserRequestToEntity(dto))));
     }
 
-    @Override
-    public RestResponse<UserDetailsResponse> getUserDetails(String username) {
-        User user = userRepository.findOneByUsernameWithRoles(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Not found user with username: " + username));
-        return RestResponse.ok(new UserDetailsResponse(
-                user.getId(),
-                user.getUsername(),
-                user.getPassword(),
-                user.getRoles().stream().map(Role::getCode).toList()
-        ));
-    }
 }

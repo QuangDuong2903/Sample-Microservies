@@ -3,38 +3,35 @@ package com.quangduong.userservice.mapper;
 import com.quangduong.commons.exception.ResourceNotFoundException;
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
-import com.quangduong.userservice.entity.Role;
 import com.quangduong.userservice.entity.User;
 import com.quangduong.userservice.repository.RoleRepository;
-import lombok.RequiredArgsConstructor;
+import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
-import java.util.Set;
+@Mapper(
+        componentModel = MappingConstants.ComponentModel.SPRING,
+        builder = @Builder(disableBuilder = true)
+)
+public abstract class UserMapper {
 
-@Component
-@RequiredArgsConstructor
-public class UserMapper {
+    @Autowired
+    private RoleRepository roleRepository;
 
-    private final RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-    private final PasswordEncoder passwordEncoder;
+    @BeanMapping(qualifiedByName = "setRoleForUser")
+    public abstract User createUserRequestToEntity(CreateUserRequest request);
 
-    public User toEntity(CreateUserRequest dto) {
-        return User.builder()
-                .username(dto.username())
-                .password(passwordEncoder.encode(dto.password()))
-                .roles(Set.of(roleRepository.findOneByCode("ROLE_USER")
-                        .orElseThrow(() -> new ResourceNotFoundException("Not found ROLE_USER")))
-                )
-                .build();
+    public abstract UserDTO userToUserDTO(User user);
+
+    @AfterMapping
+    @Named("setRoleForUser")
+    public void setRoleForUser(CreateUserRequest request, @MappingTarget User user) {
+        user.setPassword(passwordEncoder.encode(request.password()));
+        user.getRoles().add(roleRepository.findOneByCode("ROLE_USER")
+                .orElseThrow(() -> new ResourceNotFoundException("Not found ROLE_USER")));
     }
 
-    public UserDTO toDTO(User entity) {
-        return new UserDTO(
-                entity.getId(),
-                entity.getUsername(),
-                entity.getRoles().stream().map(Role::getCode).toList()
-        );
-    }
 }

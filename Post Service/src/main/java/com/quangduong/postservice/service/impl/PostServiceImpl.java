@@ -20,13 +20,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public RestResponse<PostDTO> createPost(CreatePostRequest dto) {
-        return RestResponse.created(postMapper.toPostDTO(postRepository.save(postMapper.toEntity(dto))));
+        return RestResponse.created(postMapper.postToPostDTO(postRepository
+                .save(postMapper.createPostRequestToPost(dto))));
     }
 
     @Override
     public RestResponse<PostDTO> getOnePost(Long id) {
         return postRepository.findById(id)
-                .map(postMapper::toPostDTO)
+                .map(postMapper::postToPostDTO)
                 .map(RestResponse::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Not found post with id: " + id));
     }

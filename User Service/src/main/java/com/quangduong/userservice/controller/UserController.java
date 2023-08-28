@@ -3,7 +3,6 @@ package com.quangduong.userservice.controller;
 import com.quangduong.commons.response.RestResponse;
 import com.quangduong.userservice.dto.request.CreateUserRequest;
 import com.quangduong.userservice.dto.response.UserDTO;
-import com.quangduong.userservice.dto.response.UserDetailsResponse;
 import com.quangduong.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +27,6 @@ public class UserController {
     @GetMapping
     public ResponseEntity<RestResponse<List<UserDTO>>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUser());
-    }
-
-    @GetMapping("details")
-    public ResponseEntity<RestResponse<UserDetailsResponse>> getUserDetails(@RequestParam String username) {
-        return ResponseEntity.ok(userService.getUserDetails(username));
     }
 
     @PostMapping(

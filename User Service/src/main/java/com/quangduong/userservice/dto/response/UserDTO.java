@@ -5,5 +5,5 @@ import java.util.List;
 public record UserDTO(
         Long id,
         String username,
-        List<String> roles
+        List<RoleDTO> roles
 ) {}
