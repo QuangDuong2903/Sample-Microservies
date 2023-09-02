@@ -15,7 +15,7 @@
 	<description>Notification Service</description>
 	<properties>
 		<java.version>17</java.version>
-		<spring-cloud.version>2022.0.2</spring-cloud.version>
+		<spring-cloud.version>2022.0.4</spring-cloud.version>
 		<lombok.version>1.18.28</lombok.version>
 	</properties>
 	<dependencies>
