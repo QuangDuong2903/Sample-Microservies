@@ -10,8 +10,13 @@ eureka:
     hostname: localhost
 
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: quangduong
+    password: 292003
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_DATABASE:user_service}?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_DATABASE:user_service}
     username: ${DB_USER:root}
     password: ${DB_PASSWORD:292003}
   jpa:
@@ -20,3 +25,47 @@ spring:
     open-in-view: true
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQLDialect
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+# Resilience4j properties
+resilience4j:
+  circuitbreaker:
+    instances:
+      post:
+        registerHealthIndicator: true
+        event-consumer-buffer-size: 10
+        slidingWindowSize: 5
+        slidingWindowType: COUNT_BASED
+        failureRateThreshold: 50
+        permittedNumberOfCallsInHalfOpenState: 3
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+  timelimiter:
+    instances:
+      post:
+        timeout-duration: 3s
+  retry:
+    instances:
+      post:
+        # retry for a maximum of 3 attempts, each with a delay of 5s.
+        max-attempts: 3
+        wait-duration: 5s
+  #  limit the number of concurrent calls
+  bulkhead:
+    instances:
+      post:
+        # allow max 10 concurrent requests
+        maxConcurrentCalls: 10
+        # when we get any additional requests for rating service when the existing 10 threads are busy,
+        # we wait for only 10 ms and fail the request immediately
+        maxWaitDuration: 10ms

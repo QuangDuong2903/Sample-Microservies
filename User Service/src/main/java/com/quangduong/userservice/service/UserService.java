@@ -12,4 +12,6 @@ public interface UserService {
 
     RestResponse<UserDTO> createUser(CreateUserRequest dto);
 
+    void test();
+
 }

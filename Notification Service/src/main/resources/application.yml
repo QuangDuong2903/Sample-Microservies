@@ -1,37 +1,10 @@
 ## Run rabbitmq by docker
 # docker run -d --hostname my-rabbit --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=quangduong -e RABBITMQ_DEFAULT_PASS=292003 -v rabbitmq:/var/lib/rabbitmq rabbitmq:3.12.2-management-alpine
 
-server:
-  port: 8083
-
 spring:
   application:
     name: notification-service
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: quangduong
-    password: 292003
-  cloud:
-    function:
-#      definition: sendMessage;convertToUpperCase;receiveMessage
-    definition: handleMessage
-    stream:
-      bindings:
-#        sendMessage-out-0:
-#          destination: messages-topic
-#        convertToUppercase-in-0:
-#          destination: messages-topic
-#        convertToUppercase-out-0:
-#          destination: values-topic
-#        receiveMessage-in-0:
-#          destination: values-topic
-        handleMessage-in-0:
-          destination: notification-topic
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://eureka:password@localhost:8761/eureka
-  instance:
-    hostname: localhost
+  profiles:
+    active: default
+  config:
+    import: configserver:http://service:password@localhost:8071
