@@ -11,9 +11,8 @@ eureka:
   instance:
     hostname: localhost
   client:
-    # client will not try to connect with eureka on start
+    # telling the built-in Eureka Client not to register with itself because our application should be acting as a server.
     register-with-eureka: false
-    # client will not fetch client list from server and use local cache to connect with other client
     fetch-registry: false
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
