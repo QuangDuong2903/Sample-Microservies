@@ -2,6 +2,9 @@ server:
   port: 8761
 
 spring:
+  application:
+    name:
+      discovery-server
   security:
     user:
       name: eureka
@@ -17,3 +20,15 @@ eureka:
     fetch-registry: false
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+
+management:
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"

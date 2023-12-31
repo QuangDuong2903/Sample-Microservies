@@ -17,6 +17,8 @@
 		<java.version>17</java.version>
 		<spring-cloud.version>2022.0.4</spring-cloud.version>
 		<lombok.version>1.18.28</lombok.version>
+		<zipkin-reporter-brave.version>2.16.4</zipkin-reporter-brave.version>
+		<micrometer-tracing-bridge-brave.version>1.1.5</micrometer-tracing-bridge-brave.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -34,6 +36,20 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-brave</artifactId>
+			<version>${micrometer-tracing-bridge-brave.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.zipkin.reporter2</groupId>
+			<artifactId>zipkin-reporter-brave</artifactId>
+			<version>${zipkin-reporter-brave.version}</version>
 		</dependency>
 
 		<dependency>

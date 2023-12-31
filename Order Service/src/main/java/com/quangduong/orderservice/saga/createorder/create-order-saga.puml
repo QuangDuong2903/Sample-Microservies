@@ -1,0 +1,15 @@
+@startuml
+autonumber
+"OrderController" -> "OrderSagaService" ++: createOrder
+"OrderSagaService" -> "OrderSagaService": data = new CreateOrderSagaData()
+"OrderSagaService" -> "OrderSagaService": sagaInstanceFactory.create(createOrderSaga, data)
+"OrderSagaService" -> "CreateOrderSaga" ++:
+"CreateOrderSaga" -> "OrderRepository" ++: save order
+"OrderRepository" --> "CreateOrderSaga":
+OrderRepository--
+"CreateOrderSaga" -> "CustomerServiceProxy" ++: reserveCredit
+"CustomerServiceProxy" -> "CustomerCommandHandler" ++: send ReserveCreditCommand
+"CustomerCommandHandler" -> "CustomerService" ++: reserveCredit
+
+"OrderSagaService" --> "OrderController":
+@enduml

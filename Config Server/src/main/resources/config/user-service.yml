@@ -37,6 +37,12 @@ management:
   endpoint:
     health:
       show-details: always
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0
 
 # Resilience4j properties
 resilience4j:
@@ -69,3 +75,7 @@ resilience4j:
         # when we get any additional requests for rating service when the existing 10 threads are busy,
         # we wait for only 10 ms and fail the request immediately
         maxWaitDuration: 10ms
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
